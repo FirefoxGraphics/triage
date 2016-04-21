@@ -20,20 +20,28 @@ $(document).ready(function () {
 function main(triage) {
   BUGZILLA_URL = triage.BUGZILLA_URL;
   BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
-  bugQueries = triage.bugQueries["2016"];
-
   var display = getDisplay();
+  var year = getYear();
 
-  displayTitle("2016");
-  displaySchedule("2016");
+  bugQueries = triage.bugQueries[year];
+  displayTitle(year);
+  displaySchedule(year);
 
   updateQueryURLs(triage.basequery);
 
-  var dummy = "dummy";
   getBugCounts();
+}
 
-  // Update counts periodically
-//  window.setInterval(getBugCounts, triage.refreshHours * 60 * 60 * 1000);
+function getYear() {
+  var year = $.url().param('year');
+  if (year) {
+    var yearNum = parseInt(year);
+    if (yearNum && yearNum >= 2015) {
+      return year;
+    }
+  }
+  var now = new Date();
+  return "" + now.getFullYear();
 }
 
 function getDisplay() {
@@ -45,15 +53,21 @@ function getDisplay() {
 }
 
 function displayTitle(year) {
+  $("#title").append(" " + year);
   $("#header-bg").attr("class", "header-bg header-bg-" + "release");
   var content = "";
-  for (var i = bugQueries.length-1; i>=0; i--) {
-    content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
+  if (bugQueries) {
+    for (var i = bugQueries.length-1; i>=0; i--) {
+      content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
+    }
+    $("#content").replaceWith(content);
   }
-  $("#content").replaceWith(content);
 }
 
 function displaySchedule(year) {
+  if (!bugQueries) {
+    return;
+  }
   for (var i = 0; i < bugQueries.length; i++) {
     var query = bugQueries[i];
     var dfrom = new Date(query.from.split('-'));
@@ -63,7 +77,6 @@ function displaySchedule(year) {
                                   + query.who
                                   + "</h3>"
                                   + "<h5>("
-                                  + dto.getFullYear() + ": "
                                   + dfrom.toLocaleFormat("%b %e") + " to "
                                   + dto.toLocaleFormat("%b %e") + ")</h5>"
                                   + "<div id=\"data" + i + "\""
@@ -72,6 +85,9 @@ function displaySchedule(year) {
 }
 
 function updateQueryURLs(url) {
+  if (!bugQueries) {
+    return;
+  }
   for (var i = 0; i < bugQueries.length; i++) {
     bugQueries[i]["url"] = url + ("&chfieldfrom=" + bugQueries[i].from +
                                   "&chfieldto=" + bugQueries[i].to);
@@ -79,6 +95,9 @@ function updateQueryURLs(url) {
 }
 
 function getBugCounts() {
+  if (!bugQueries) {
+    return;
+  }
   for (var i = 0; i < bugQueries.length; i++) {
     var bugQuery = bugQueries[i];
     $.ajax({

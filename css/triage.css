@@ -40,7 +40,8 @@ body {
 
 .subtitle {
   font-size: 3vmin;
-  margin-left: -10vmin;
+#  margin-left: -10vmin;
+  margin-left: -30vmin;
   padding-top: 10vmin;
 }
 
