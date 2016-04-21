@@ -1,0 +1,78 @@
+{
+  "BUGZILLA_URL": "https://bugzilla.mozilla.org/buglist.cgi",
+  "BUGZILLA_REST_URL": "https://bugzilla.mozilla.org/rest/bug",
+  "basequery" : "?f1=status_whiteboard&o1=notsubstring&emailtype1=exact&chfield=%5BBug%20creation%5D&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=nobody%40mozilla.org&v1=gfx-noted&component=Canvas%3A%202D&component=Canvas%3A%20WebGL&component=GFX%3A%20Color%20Management&component=Graphics&component=Graphics%3A%20Layers&component=Graphics%3A%20Text&component=Image%20Blocking&component=ImageLib&component=Panning%20and%20Zooming&product=Core",
+  "bugQueries": [
+    {
+      "who" : "Sotaro",
+      "from" : "2016-01-02",
+      "to" : "2016-01-08"
+    },
+    {
+      "who" : "David",
+      "from" : "2016-01-09",
+      "to" : "2016-01-15"
+    },
+    {
+      "who" : "Timothy",
+      "from" : "2016-01-16",
+      "to" : "2016-01-22"
+    },
+    {
+      "who" : "Nicolas",
+      "from" : "2016-01-23",
+      "to" : "2016-01-29"
+    },
+    {
+      "who" : "Jeff M",
+      "from" : "2016-01-30",
+      "to" : "2016-02-05"
+    },
+    {
+      "who" : "Mason",
+      "from" : "2016-02-06",
+      "to" : "2016-02-12"
+    },
+    {
+      "who" : "Benoit",
+      "from" : "2016-02-13",
+      "to" : "2016-02-19"
+    },
+    {
+      "who" : "Lee",
+      "from" : "2016-02-20",
+      "to" : "2016-02-26"
+    },
+    {
+      "who" : "Milan",
+      "from" : "2016-02-27",
+      "to" : "2016-03-04"
+    },
+    {
+      "who" : "Edwin",
+      "from" : "2016-03-5",
+      "to" : "2016-03-11"
+    },
+    {
+      "who" : "Jamie",
+      "from" : "2016-03-12",
+      "to" : "2016-03-18"
+    },
+    {
+      "who" : "Bas",
+      "from" : "2016-03-19",
+      "to" : "2016-03-25"
+    },
+    {
+      "who" : "Jeff G",
+      "from" : "2016-03-25",
+      "to" : "2016-04-01"
+    },
+    {
+      "who" : "Sotaro",
+      "from" : "2016-04-02",
+      "to" : "2016-04-08"
+    }
+  ],
+  "refreshHours": 12
+}
