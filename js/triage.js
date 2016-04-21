@@ -20,7 +20,7 @@ $(document).ready(function () {
 function main(triage) {
   BUGZILLA_URL = triage.BUGZILLA_URL;
   BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
-  bugQueries = triage.bugQueries;
+  bugQueries = triage.bugQueries["2016"];
 
   var display = getDisplay();
 
@@ -73,7 +73,8 @@ function displaySchedule(year) {
 
 function updateQueryURLs(url) {
   for (var i = 0; i < bugQueries.length; i++) {
-    bugQueries[i]["url"] = url + "&chfieldfrom=" + bugQueries[i].from + "&chfieldto=" + bugQueries[i].to;
+    bugQueries[i]["url"] = url + ("&chfieldfrom=" + bugQueries[i].from +
+                                  "&chfieldto=" + bugQueries[i].to);
   }
 }
 

@@ -9,9 +9,9 @@ body {
 
 .header {
   margin: 0px;
-  height:30vh;
+  height:15vh;
   text-align: center;
-  font-size: 10vmin;
+  font-size:  6vmin;
   font-family: Moz;
 }
 
@@ -19,27 +19,19 @@ body {
   position: absolute;
   z-index: -1;
   margin: 0px;
-  height:30vh;
+  height:15vh;
   border-bottom: 50px solid transparent;
 }
 
-.header-bg-release, .header-bg-beta {
+.header-bg-release {
   border-right: 100vw solid #FF9500;
-}
-
-.header-bg-aurora {
-  border-right: 100vw solid #00539F;
-}
-
-.header-bg-nightly {
-  border-right: 100vw solid #002147;
 }
 
 .header div {
   display: inline-block;
   height: 100%;
   vertical-align: top;
-  margin-top: 7vmin;
+  margin-top: 3vmin;
 }
 
 .title-light {
@@ -47,8 +39,8 @@ body {
 }
 
 .subtitle {
-  font-size: 5vmin;
-  margin-left: -40vmin;
+  font-size: 3vmin;
+  margin-left: -10vmin;
   padding-top: 10vmin;
 }
 
