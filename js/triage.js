@@ -17,34 +17,41 @@ $(document).ready(function () {
   });
 });
 
-function main(triage) {
+function main(triage)
+{
   BUGZILLA_URL = triage.BUGZILLA_URL;
   BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
   var display = getDisplay();
-  var year = getYear();
+  var now = new Date();
+  var currentYear = now.getFullYear();
+  var year = getYear(now);
 
   bugQueries = triage.bugQueries[year];
-  var count = setupQueryURLs(triage.basequery, $.url().param('future'));
+  var future = $.url().param('future');
+  var count = setupQueryURLs(triage.basequery, future);
 
-  displayTitle(year, count);
+  var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
+
+  displayTitle(year, count, displayType);
   displaySchedule(year);
+  displayYearFooter(currentYear, displayType);
 
   getBugCounts();
 }
 
-function getYear() {
+function getYear(now)
+{
   var year = $.url().param('year');
   if (year) {
-    var yearNum = parseInt(year);
-    if (yearNum && yearNum >= 2015) {
+    if (parseInt(year)) {
       return year;
     }
   }
-  var now = new Date();
   return "" + now.getFullYear();
 }
 
-function getDisplay() {
+function getDisplay()
+{
   var display = $.url().param('display');
   if (display && (display === BIG_SCREEN)) {
     return BIG_SCREEN;
@@ -52,9 +59,15 @@ function getDisplay() {
   return SMALL_SCREEN;
 }
 
-function displayTitle(year, count) {
+function displayTitle(year, count, displayType)
+{
   $("#title").append(" " + year);
-  $("#header-bg").attr("class", "header-bg header-bg-" + "release");
+  $("#header-bg").attr("class", "header-bg header-bg-" + displayType);
+  if (displayType != "current") {
+    $("#title").attr("class", "title-light");
+    $("#subtitle").attr("class", "subtitle title-light");
+  }
+
   var content = "";
   if (bugQueries) {
     for (var i = count-1; i>=0; i--) {
@@ -64,7 +77,8 @@ function displayTitle(year, count) {
   }
 }
 
-function displaySchedule(year) {
+function displaySchedule(year)
+{
   if (!bugQueries) {
     return;
   }
@@ -87,7 +101,19 @@ function displaySchedule(year) {
   }
 }
 
-function setupQueryURLs(url, seeall) {
+function displayYearFooter(currentYear, displayType)
+{
+  var footer = "<div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
+  for (var year=currentYear; year >= 2015; year --) {
+    footer += "<a href=\"?year=" + year + "\">" + year + "</a> | ";
+  }
+  footer += "<a href=\"?year=" + currentYear + "&future=1\">Scheduled</a>";
+  footer += "</div>";
+  $("#body").append(footer);
+}
+
+function setupQueryURLs(url, seeall)
+{
   if (!bugQueries) {
     return 0;
   }
@@ -108,7 +134,8 @@ function setupQueryURLs(url, seeall) {
   return bugQueries.length;
 }
 
-function getBugCounts() {
+function getBugCounts()
+{
   if (!bugQueries) {
     return;
   }
@@ -138,7 +165,8 @@ function getBugCounts() {
   }
 }
 
-function displayCount(index, count, url) {
+function displayCount(index, count, url)
+{
   $("#data" + index).replaceWith("<div class=\"data\"><a href=\"" + url
                                  + "\">" + count + "</a></div>" );
 }

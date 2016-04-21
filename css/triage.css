@@ -23,8 +23,16 @@ body {
   border-bottom: 50px solid transparent;
 }
 
-.header-bg-release {
+.header-bg-current {
   border-right: 100vw solid #FF9500;
+}
+
+.header-bg-past {
+  border-right: 100vw solid #00539F;
+}
+
+.header-bg-future {
+  border-right: 100vw solid #002147;
 }
 
 .header div {
@@ -40,7 +48,6 @@ body {
 
 .subtitle {
   font-size: 3vmin;
-#  margin-left: -10vmin;
   margin-left: -30vmin;
   padding-top: 10vmin;
 }
@@ -97,16 +104,16 @@ a:hover {
   padding-right: 3vmin;
 }
 
-.footer-release, .footer-beta {
+.footer-current {
   background-color: #FF9500;
 }
 
-.footer-aurora {
+.footer-past {
   background-color: #00539F;
   color: #EAEFF2;
 }
 
-.footer-nightly {
+.footer-future {
   background-color: #002147;
   color: #EAEFF2;
 }
