@@ -94,8 +94,8 @@ function displaySchedule(year)
                                   + query.who
                                   + "</h3>"
                                   + "<h5>("
-                                  + dfrom.toLocaleFormat("%b %e") + " to "
-                                  + dto.toLocaleFormat("%b %e") + ")</h5>"
+                                  + dfrom.toLocaleDateString('en-US',{month:'short', day:'numeric'})+ " - "
+                                  + dto.toLocaleDateString('en-US',{month:'short', day:'numeric'}) + ")</h5>"
                                   + "<div id=\"data" + i + "\""
                                   + " class=\"data greyedout\">?</div></div>");
   }
