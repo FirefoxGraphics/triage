@@ -11,6 +11,9 @@ var BUGZILLA_URL;
 var BUGZILLA_REST_URL;
 var bugQueries;
 
+// Not worth chasing toLocaleDateString etc. compatibility
+var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 $(document).ready(function () {
   $.getJSON('js/triage.json', function(data) {
     main(data);
@@ -87,15 +90,16 @@ function displaySchedule(year)
     if (!("url" in query)) {
       continue;
     }
-    var dfrom = new Date(query.from.split('-'));
-    var dto = new Date(query.to.split('-'));
+    var dfrom = query.from.split('-');
+    var dto = query.to.split('-');
     var id = year + "-" + i;
+
     $("#reportDiv" + id).replaceWith("<div class=\"bugcount\"><h3>"
                                   + query.who
                                   + "</h3>"
                                   + "<h5>("
-                                  + dfrom.toLocaleDateString('en-US',{month:'short', day:'numeric'})+ " - "
-                                  + dto.toLocaleDateString('en-US',{month:'short', day:'numeric'}) + ")</h5>"
+                                  + MONTHS[dfrom[1]-1] + " " + dfrom[2] + " - "
+                                  + MONTHS[dto[1]-1] + " " + dto[2] + ")</h5>"
                                   + "<div id=\"data" + i + "\""
                                   + " class=\"data greyedout\">?</div></div>");
   }
@@ -123,7 +127,7 @@ function setupQueryURLs(url, seeall)
   cutoff.setDate(cutoff.getDate() - 4);
   for (var i = 0; i < bugQueries.length; i++) {
     if (!seeall) {
-      var dto = new Date(bugQueries[i].to.split('-'));
+      var dto = new Date(bugQueries[i].to);
       if (cutoff < dto) {
         return i;
       }
