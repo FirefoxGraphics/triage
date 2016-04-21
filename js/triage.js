@@ -24,10 +24,10 @@ function main(triage) {
   var year = getYear();
 
   bugQueries = triage.bugQueries[year];
-  displayTitle(year);
-  displaySchedule(year);
+  var count = updateQueryURLs(triage.basequery);
 
-  updateQueryURLs(triage.basequery);
+  displayTitle(year, count);
+  displaySchedule(year);
 
   getBugCounts();
 }
@@ -52,12 +52,12 @@ function getDisplay() {
   return SMALL_SCREEN;
 }
 
-function displayTitle(year) {
+function displayTitle(year, count) {
   $("#title").append(" " + year);
   $("#header-bg").attr("class", "header-bg header-bg-" + "release");
   var content = "";
   if (bugQueries) {
-    for (var i = bugQueries.length-1; i>=0; i--) {
+    for (var i = count-1; i>=0; i--) {
       content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
     }
     $("#content").replaceWith(content);
@@ -70,6 +70,9 @@ function displaySchedule(year) {
   }
   for (var i = 0; i < bugQueries.length; i++) {
     var query = bugQueries[i];
+    if (!("url" in query)) {
+      continue;
+    }
     var dfrom = new Date(query.from.split('-'));
     var dto = new Date(query.to.split('-'));
     var id = year + "-" + i;
@@ -86,12 +89,21 @@ function displaySchedule(year) {
 
 function updateQueryURLs(url) {
   if (!bugQueries) {
-    return;
+    return 0;
   }
+  // Do not show results for dates that are too close to today.  Only once we
+  // are five days after the end of the term...
+  var cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 4);
   for (var i = 0; i < bugQueries.length; i++) {
+    var dto = new Date(bugQueries[i].to.split('-'));
+    if (cutoff < dto) {
+      return i;
+    }
     bugQueries[i]["url"] = url + ("&chfieldfrom=" + bugQueries[i].from +
                                   "&chfieldto=" + bugQueries[i].to);
   }
+  return bugQueries.length;
 }
 
 function getBugCounts() {
@@ -100,6 +112,9 @@ function getBugCounts() {
   }
   for (var i = 0; i < bugQueries.length; i++) {
     var bugQuery = bugQueries[i];
+    if (!("url" in bugQuery)) {
+      continue;
+    }
     $.ajax({
       url: BUGZILLA_REST_URL + bugQuery.url + '&count_only=1',
       bugQuery: bugQuery,
