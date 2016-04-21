@@ -24,7 +24,7 @@ function main(triage) {
   var year = getYear();
 
   bugQueries = triage.bugQueries[year];
-  var count = updateQueryURLs(triage.basequery);
+  var count = setupQueryURLs(triage.basequery, $.url().param('future'));
 
   displayTitle(year, count);
   displaySchedule(year);
@@ -87,7 +87,7 @@ function displaySchedule(year) {
   }
 }
 
-function updateQueryURLs(url) {
+function setupQueryURLs(url, seeall) {
   if (!bugQueries) {
     return 0;
   }
@@ -96,9 +96,11 @@ function updateQueryURLs(url) {
   var cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 4);
   for (var i = 0; i < bugQueries.length; i++) {
-    var dto = new Date(bugQueries[i].to.split('-'));
-    if (cutoff < dto) {
-      return i;
+    if (!seeall) {
+      var dto = new Date(bugQueries[i].to.split('-'));
+      if (cutoff < dto) {
+        return i;
+      }
     }
     bugQueries[i]["url"] = url + ("&chfieldfrom=" + bugQueries[i].from +
                                   "&chfieldto=" + bugQueries[i].to);
