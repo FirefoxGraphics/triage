@@ -107,7 +107,7 @@ function displaySchedule(year)
 
 function displayYearFooter(currentYear, displayType)
 {
-  var footer = "<div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
+  var footer = "<br><br><br><br><div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
   for (var year=currentYear; year >= 2015; year --) {
     footer += "<a href=\"?year=" + year + "\">" + year + "</a> | ";
   }
