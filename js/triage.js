@@ -20,26 +20,50 @@ $(document).ready(function () {
   });
 });
 
-function main(triage)
+function main(json)
 {
-  BUGZILLA_URL = triage.BUGZILLA_URL;
-  BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
-  var display = getDisplay();
   var now = new Date();
   var currentYear = now.getFullYear();
-  var year = getYear(now);
 
-  bugQueries = triage.bugQueries[year];
-  var future = $.url().param('future');
-  var count = setupQueryURLs(triage.basequery, future);
+  var op = getOperation();
+  if (op == "triage") {
+    $("#subtitle").replaceWith("<div id=\"subtitle\" class=\"subtitle\">Incoming Bug Triage</div>");
+    
+    var triage = json.triage;
+    BUGZILLA_URL = triage.BUGZILLA_URL;
+    BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
+    var display = getDisplay();
 
-  var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
+    var year = getYear(now);
 
-  displayTitle(year, count, displayType);
-  displaySchedule(year);
-  displayYearFooter(currentYear, displayType);
+    bugQueries = triage.bugQueries[year];
+    var future = $.url().param('future');
+    var count = setupQueryURLs(triage.basequery, future);
 
-  getBugCounts();
+    var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
+
+    displayTitle(year, count, displayType);
+    displaySchedule(year);
+    displayYearFooter(currentYear, displayType);
+
+    getBugCounts();
+
+  } else if (op == "tracked") {
+    $("#subtitle").replaceWith("<div id=\"subtitle\" class=\"subtitle\">Tracking in Graphics</div>");
+
+    var displayType = "current";
+    displayYearFooter(currentYear, displayType);
+  }
+
+}
+
+function getOperation()
+{
+  var op = $.url().param('op');
+  if (op) {
+    return op;
+  }
+  return "triage";
 }
 
 function getYear(now)
@@ -111,7 +135,8 @@ function displayYearFooter(currentYear, displayType)
   for (var year=currentYear; year >= 2015; year --) {
     footer += "<a href=\"?year=" + year + "\">" + year + "</a> | ";
   }
-  footer += "<a href=\"?year=" + currentYear + "&future=1\">Scheduled</a>";
+  footer += "<a href=\"?year=" + currentYear + "&future=1\">Scheduled</a> | ";
+  footer += "<a href=\"?op=tracked&nightly=49\">Tracked</a>";
   footer += "</div>";
   $("#body").append(footer);
 }
