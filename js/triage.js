@@ -44,7 +44,7 @@ function main(json)
 
     displayTitle(year, count, displayType);
     displaySchedule(year);
-    displayYearFooter(currentYear, displayType);
+    displayYearFooter(currentYear, displayType, triage);
 
     getBugCounts();
 
@@ -129,9 +129,14 @@ function displaySchedule(year)
   }
 }
 
-function displayYearFooter(currentYear, displayType)
+function displayYearFooter(currentYear, displayType, triage)
 {
   var footer = "<br><br><br><br><div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
+  var nextYear = currentYear + 1;
+  if ((""+nextYear) in triage.bugQueries) {
+    footer += "<a href=\"?year=" + (nextYear) + "&future=1\">" + (nextYear) + "</a> | ";
+  }
+
   for (var year=currentYear; year >= 2015; year --) {
     footer += "<a href=\"?year=" + year + "\">" + year + "</a> | ";
   }
