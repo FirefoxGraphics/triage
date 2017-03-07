@@ -2,6 +2,7 @@
 "triage" : {
   "BUGZILLA_URL": "https://bugzilla.mozilla.org/buglist.cgi",
   "BUGZILLA_REST_URL": "https://bugzilla.mozilla.org/rest/bug",
+  "basequery" : "?keywords=intermittent-failure&keywords_type=nowords&f1=status_whiteboard&o1=notsubstring&emailtype1=exact&chfield=%5BBug%20creation%5D&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=nobody%40mozilla.org&v1=gfx-noted&component=Canvas%3A%202D&component=Canvas%3A%20WebGL&component=GFX%3A%20Color%20Management&component=Graphics&component=Graphics%3A%20Layers&component=Graphics%3A%20Text&component=Graphics%3A%20WebRender&component=Image%20Blocking&component=ImageLib&component=Panning%20and%20Zooming&product=Core",
   "bugQueries": {
    "2015" : [
      {"who":"Milan", "from":"2015-1-3", "to":"2015-1-9"},
@@ -146,5 +147,6 @@
 "tracking" : {
   "BUGZILLA_URL": "https://bugzilla.mozilla.org/buglist.cgi",
   "BUGZILLA_REST_URL": "https://bugzilla.mozilla.org/rest/bug",
+  "basequery" : "?keywords=intermittent-failure&keywords_type=nowords&f1=status_whiteboard&o1=notsubstring&emailtype1=exact&chfield=%5BBug%20creation%5D&emailassigned_to1=1&query_format=advanced&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=nobody%40mozilla.org&v1=gfx-noted&component=Canvas%3A%202D&component=Canvas%3A%20WebGL&component=GFX%3A%20Color%20Management&component=Graphics&component=Graphics%3A%20Layers&component=Graphics%3A%20Text&component=Graphics%3A%20WebRender&component=Image%20Blocking&component=ImageLib&component=Panning%20and%20Zooming&product=Core"
  }
 }
