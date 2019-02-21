@@ -162,8 +162,7 @@ function setupQueryURLs(url, seeall)
         return i;
       }
     }
-    bugQueries[i]["url"] = url + ("&chfieldfrom=" + bugQueries[i].from +
-                                  "&chfieldto=" + bugQueries[i].to);
+    bugQueries[i]["url"] = url.replace(/<FROM>/g, bugQueries[i].from).replace(/<TO>/g, bugQueries[i].to);
   }
   return bugQueries.length;
 }
