@@ -154,10 +154,9 @@ function setupQueryURLs(url, seeall)
   // Do not show results for dates that are too close to today.  Only once we
   // are five days after the end of the term...
   var cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 4);
   for (var i = 0; i < bugQueries.length; i++) {
     if (!seeall) {
-      var dto = new Date(bugQueries[i].to);
+      var dto = new Date(bugQueries[i].from);
       if (cutoff < dto) {
         return i;
       }
