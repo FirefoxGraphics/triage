@@ -151,7 +151,7 @@ function getBugCounts()
   if (!bugQueries) {
     return;
   }
-  for (var i = 0; i < bugQueries.length; i++) {
+  for (var i = bugQueries.length-1; i >= 0; i--) {
     var bugQuery = bugQueries[i];
     if (!("url" in bugQuery)) {
       continue;
