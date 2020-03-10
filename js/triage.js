@@ -39,6 +39,7 @@ function main(json)
   console.log(`ajax`);
   $.ajax({
     url: CALENDAR_URL,
+    crossDomain:true,
     success: function(data) {
       console.log(`great success`);
       var icsBugQueries = parseICS(data);
