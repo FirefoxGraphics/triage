@@ -40,6 +40,7 @@ function main(json)
   $.ajax({
     url: CALENDAR_URL,
     crossDomain:true,
+    crossOrigin:true,
     success: function(data) {
       console.log(`great success`);
       var icsBugQueries = parseICS(data);
