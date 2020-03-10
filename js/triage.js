@@ -34,15 +34,12 @@ function main(json)
   BUGZILLA_URL = triage.BUGZILLA_URL;
   BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
   CALENDAR_URL = triage.CALENDAR_URL;
-  //CALENDAR_URL = "temp.ics";
 
-  console.log(`ajax`);
   $.ajax({
     url: CALENDAR_URL,
     crossDomain:true,
     crossOrigin:true,
     success: function(data) {
-      console.log(`great success`);
       var icsBugQueries = parseICS(data);
 
       var display = getDisplay();
@@ -70,18 +67,16 @@ function parseICS(icsdata) {
   var icsBugQueries = {};
 
   // Download calendar and parse into bugqueries.
-  console.log(`parsing`);
   var ics = ical.parseICS(icsdata);
-  console.log(`done parsing`);
   for (let k in ics) {
     if (ics.hasOwnProperty(k)) {
       var ev = ics[k];
       if (ics[k].type == 'VEVENT') {
-        console.log(`${ev.summary} is in ${ev.location} on the ${ev.start.getDate()} of ${MONTHS[ev.start.getMonth()]} at ${ev.start.getFullYear()}`);
+        //console.log(`${ev.summary} is in ${ev.location} on the ${ev.start.getDate()} of ${MONTHS[ev.start.getMonth()]} at ${ev.start.getFullYear()}`);
         var event_regex = /\[.*\] (.*)/g;
         var eventMatch = event_regex.exec(ev.summary);
         if (!eventMatch) {
-          console.log('Incorrect summary syntax');
+          //console.log('Incorrect summary syntax');
           continue; // Incorrect event syntax, ignore.
         }
 
