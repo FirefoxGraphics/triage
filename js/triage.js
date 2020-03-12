@@ -46,7 +46,6 @@ function main(json)
 
       var year = getYear(now);
     
-      //bugQueries = triage.bugQueries[year];
       bugQueries = icsBugQueries[year];
       var future = $.url().param('future');
       var count = setupQueryURLs(triage.basequery, future);
@@ -55,7 +54,7 @@ function main(json)
     
       displayTitle(year, count, displayType);
       displaySchedule(year);
-      displayYearFooter(currentYear, displayType, triage);
+      displayYearFooter(currentYear, displayType, icsBugQueries);
     
       getBugCounts();
     }
@@ -172,11 +171,11 @@ function displaySchedule(year)
   }
 }
 
-function displayYearFooter(currentYear, displayType, triage)
+function displayYearFooter(currentYear, displayType, icsBugQueries)
 {
   var footer = "<br><br><br><br><div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
   var nextYear = currentYear + 1;
-  if ((""+nextYear) in triage.bugQueries) {
+  if ((""+nextYear) in icsBugQueries) {
     footer += "<a href=\"?year=" + (nextYear) + "&future=1\">" + (nextYear) + "</a> | ";
   }
 
