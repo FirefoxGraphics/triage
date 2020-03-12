@@ -9,6 +9,7 @@ var SMALL_SCREEN = "smallscreen";
 
 var BUGZILLA_URL;
 var BUGZILLA_REST_URL;
+var CALENDAR_URL;
 var bugQueries;
 
 // Not worth chasing toLocaleDateString etc. compatibility
@@ -20,6 +21,8 @@ $(document).ready(function () {
   });
 });
 
+
+
 function main(json)
 {
   var now = new Date();
@@ -30,21 +33,79 @@ function main(json)
   var triage = json.triage;
   BUGZILLA_URL = triage.BUGZILLA_URL;
   BUGZILLA_REST_URL = triage.BUGZILLA_REST_URL;
-  var display = getDisplay();
+  CALENDAR_URL = triage.CALENDAR_URL;
 
-  var year = getYear(now);
+  $.ajax({
+    url: CALENDAR_URL,
+    crossDomain:true,
+    crossOrigin:true,
+    success: function(data) {
+      var icsBugQueries = parseICS(data);
 
-  bugQueries = triage.bugQueries[year];
-  var future = $.url().param('future');
-  var count = setupQueryURLs(triage.basequery, future);
+      var display = getDisplay();
 
-  var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
+      var year = getYear(now);
+    
+      bugQueries = icsBugQueries[year];
+      var future = $.url().param('future');
+      var count = setupQueryURLs(triage.basequery, future);
+    
+      var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
+    
+      displayTitle(year, count, displayType);
+      displaySchedule(year);
+      displayYearFooter(currentYear, displayType, icsBugQueries);
+    
+      getBugCounts();
+    }
+    });
+}
 
-  displayTitle(year, count, displayType);
-  displaySchedule(year);
-  displayYearFooter(currentYear, displayType, triage);
+function parseICS(icsdata) {
 
-  getBugCounts();
+  var icsBugQueries = {};
+
+  // Download calendar and parse into bugqueries.
+  var ics = ical.parseICS(icsdata);
+  for (let k in ics) {
+    if (ics.hasOwnProperty(k)) {
+      var ev = ics[k];
+      if (ics[k].type == 'VEVENT') {
+        //console.log(`${ev.summary} is in ${ev.location} on the ${ev.start.getDate()} of ${MONTHS[ev.start.getMonth()]} at ${ev.start.getFullYear()}`);
+        var event_regex = /\[.*\] (.*)/g;
+        var eventMatch = event_regex.exec(ev.summary);
+        if (!eventMatch) {
+          //console.log('Incorrect summary syntax');
+          continue; // Incorrect event syntax, ignore.
+        }
+
+        var who = eventMatch[1];
+        var startDate = `${ev.start.getFullYear()}-${ev.start.getMonth() + 1}-${ev.start.getDate()}`;
+        var endDate = `${ev.end.getFullYear()}-${ev.end.getMonth() + 1}-${ev.end.getDate()}`;
+        var year = `${ev.start.getFullYear()}`;
+
+
+        if (!icsBugQueries[year])
+          icsBugQueries[year] = [];
+
+        icsBugQueries[year].push({
+          "who": who,
+          "from": startDate,
+          "to": endDate
+        })
+      }
+    }
+  }
+
+  // Sort
+  for (yearKey in icsBugQueries) {
+    icsBugQueries[yearKey].sort(
+      function(a, b){
+         return new Date(a.from) > new Date(b.from);
+      });
+  }
+
+  return icsBugQueries;
 }
 
 function getYear(now)
@@ -110,11 +171,11 @@ function displaySchedule(year)
   }
 }
 
-function displayYearFooter(currentYear, displayType, triage)
+function displayYearFooter(currentYear, displayType, icsBugQueries)
 {
   var footer = "<br><br><br><br><div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
   var nextYear = currentYear + 1;
-  if ((""+nextYear) in triage.bugQueries) {
+  if ((""+nextYear) in icsBugQueries) {
     footer += "<a href=\"?year=" + (nextYear) + "&future=1\">" + (nextYear) + "</a> | ";
   }
 
