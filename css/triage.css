@@ -52,6 +52,14 @@ body {
   padding-top: 10vmin;
 }
 
+.announcement {
+  font-size: 3vmin;
+  margin-top: 10vmin;
+  padding: 1vmin 0;
+  border: 3px solid orange;
+  text-align: center;
+}
+
 #content {
   height: 67vh;
   padding-top: 3vh;
