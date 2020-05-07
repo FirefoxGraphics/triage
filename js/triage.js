@@ -195,7 +195,7 @@ function setupQueryURLs(url, old_url, seeall)
   // Do not show results for dates that are too close to today.  Only once we
   // are five days after the end of the term...
   var cutoff = new Date();
-  var oldquery_stopdate = new Date(2020, 5, 2);
+  var oldquery_stopdate = new Date("2020-5-2");
   for (var i = 0; i < bugQueries.length; i++) {
     if (!seeall) {
       var dto = new Date(bugQueries[i].from);
