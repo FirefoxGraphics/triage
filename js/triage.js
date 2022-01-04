@@ -175,14 +175,19 @@ function displayYearFooter(currentYear, displayType, icsBugQueries)
 {
   var footer = "<br><br><br><br><div id=\"footer\" class=\"footer-" + displayType + "\">Year &gt; ";
   var nextYear = currentYear + 1;
-  if ((""+nextYear) in icsBugQueries) {
+
+  // If the ics file has dates for future years. Generally shouldn't show up unless you're
+  // near the end of the year and the generation script ran into the new year.
+  if (("" + nextYear) in icsBugQueries) {
     footer += "<a href=\"?year=" + (nextYear) + "&future=1\">" + (nextYear) + "</a> | ";
   }
 
-  for (var year=currentYear; year >= 2020; year--) {
+  // The future schedule
+  footer += "<a href=\"?year=" + currentYear + "&future=1\">Schedule</a>";
+
+  for (var year = currentYear; year >= 2020; year--) {
     footer += "<a href=\"?year=" + year + "\">" + year + "</a> | ";
   }
-  footer += "<a href=\"?year=" + currentYear + "&future=1\">Scheduled</a>";
   footer += "</div>";
   $("#body").append(footer);
 }
@@ -248,6 +253,8 @@ function getBugCounts()
 
 function displayCount(index, count, url)
 {
+  if (count == 0)
+    count = '-';
   $("#data" + index).replaceWith("<div class=\"data\"><a href=\"" + url
                                  + "\">" + count + "</a></div>" );
 }
