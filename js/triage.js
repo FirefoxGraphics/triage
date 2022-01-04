@@ -254,7 +254,7 @@ function getBugCounts()
 function displayCount(index, count, url)
 {
   if (count == 0)
-    count = '-';
+    count = '&nbsp;';
   $("#data" + index).replaceWith("<div class=\"data\"><a href=\"" + url
                                  + "\">" + count + "</a></div>" );
 }
