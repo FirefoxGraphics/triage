@@ -21,8 +21,6 @@ $(document).ready(function () {
   });
 });
 
-
-
 function main(json)
 {
   var now = new Date();
@@ -41,9 +39,7 @@ function main(json)
     crossOrigin:true,
     success: function(data) {
       var icsBugQueries = parseICS(data);
-
       var display = getDisplay();
-
       var year = getYear(now);
     
       bugQueries = icsBugQueries[year];
@@ -62,7 +58,6 @@ function main(json)
 }
 
 function parseICS(icsdata) {
-
   var icsBugQueries = {};
 
   // Download calendar and parse into bugqueries.
@@ -71,11 +66,11 @@ function parseICS(icsdata) {
     if (ics.hasOwnProperty(k)) {
       var ev = ics[k];
       if (ics[k].type == 'VEVENT') {
-        //console.log(`${ev.summary} is in ${ev.location} on the ${ev.start.getDate()} of ${MONTHS[ev.start.getMonth()]} at ${ev.start.getFullYear()}`);
+        // console.log(`${ev.summary} is in ${ev.location} on the ${ev.start.getDate()} of ${MONTHS[ev.start.getMonth()]} at ${ev.start.getFullYear()}`);
         var event_regex = /\[.*\] (.*)/g;
         var eventMatch = event_regex.exec(ev.summary);
         if (!eventMatch) {
-          //console.log('Incorrect summary syntax');
+          // console.log('Incorrect summary syntax');
           continue; // Incorrect event syntax, ignore.
         }
 
@@ -83,16 +78,29 @@ function parseICS(icsdata) {
         var startDate = `${ev.start.getFullYear()}-${ev.start.getMonth() + 1}-${ev.start.getDate()}`;
         var endDate = `${ev.end.getFullYear()}-${ev.end.getMonth() + 1}-${ev.end.getDate()}`;
         var year = `${ev.start.getFullYear()}`;
+        var endyear = `${ev.end.getFullYear()}`;
 
 
         if (!icsBugQueries[year])
           icsBugQueries[year] = [];
 
+        if (!icsBugQueries[endyear])
+          icsBugQueries[endyear] = [];
+
         icsBugQueries[year].push({
           "who": who,
           "from": startDate,
           "to": endDate
-        })
+        });
+
+        if (year != endyear) {
+          icsBugQueries[endyear].push({
+            "who": who,
+            "from": startDate,
+            "to": endDate
+          });
+        }
+
       }
     }
   }
