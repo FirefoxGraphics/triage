@@ -147,8 +147,14 @@ function displayTitle(year, count, displayType)
 
   var content = "";
   if (bugQueries) {
-    for (var i = count-1; i>=0; i--) {
-      content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
+    if (displayType == 'future') {
+      for (var i = 0; i < count; i++) {
+        content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
+      }
+    } else {
+      for (var i = count - 1; i >= 0; i--) {
+        content += "<div class=\"bugcount\" id=\"reportDiv" + year + "-" + i + "\"></div>\n";
+      }
     }
     $("#content").replaceWith(content);
   }
@@ -159,6 +165,7 @@ function displaySchedule(year)
   if (!bugQueries) {
     return;
   }
+
   for (var i = 0; i < bugQueries.length; i++) {
     var query = bugQueries[i];
     if (!("url" in query)) {
