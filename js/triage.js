@@ -44,7 +44,7 @@ function main(json)
     
       bugQueries = icsBugQueries[year];
       var future = $.url().param('future');
-      var count = setupQueryURLs(triage.basequery, triage.old_basequery,future);
+      var count = setupQueryURLs(triage, future);
     
       var displayType = (future ? "future" : (year==currentYear ? "current" : "past"));
     
@@ -205,15 +205,15 @@ function displayYearFooter(currentYear, displayType, icsBugQueries)
   $("#body").append(footer);
 }
 
-function setupQueryURLs(url, old_url, seeall)
+function setupQueryURLs(triage, seeall)
 {
   if (!bugQueries) {
     return 0;
   }
+
   // Do not show results for dates that are too close to today.  Only once we
   // are five days after the end of the term...
   var cutoff = new Date();
-  var oldquery_stopdate = new Date("2020-5-2");
   for (var i = 0; i < bugQueries.length; i++) {
     if (!seeall) {
       var dto = new Date(bugQueries[i].from);
@@ -222,13 +222,13 @@ function setupQueryURLs(url, old_url, seeall)
       }
     }
 
-    var date_query_to = new Date(bugQueries[i].to);
-    if (oldquery_stopdate >= date_query_to) {
-      bugQueries[i]["url"] = old_url.replace(/<FROM>/g, bugQueries[i].from).replace(/<TO>/g, bugQueries[i].to);
-    }
-    else {
-      bugQueries[i]["url"] = url.replace(/<FROM>/g, bugQueries[i].from).replace(/<TO>/g, bugQueries[i].to);
-    }
+    var search_params = triage.generic_bugzilla_search_template;
+    var components = triage.graphics_components;
+
+    search_params = search_params.replace(/<COMPONENT>/g, components);
+    search_params = search_params.replace(/<FROM>/g, bugQueries[i].from).replace(/<TO>/g, bugQueries[i].to);
+
+    bugQueries[i]["url"] = search_params;
   }
   return bugQueries.length;
 }
