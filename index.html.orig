@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Graphics Bug Triage</title>
+    <link rel="stylesheet" type="text/css" href="css/triage.css">
+    <script src="js/libs/jquery-1.12.0.min.js"></script>
+    <script src="js/libs/jquery-cross-origin.min.js"></script>
+    <script src="js/libs/purl-2.3.1/purl.js"></script>
+    <script src="js/libs/ical.js"></script>
+    <script src="js/triage.js"></script>
+  </head>
+  <body id="body">
+    <div id="header-bg" class="header-bg"></div>
+    <div class="header"><img id="title-img" src="images/firefox.png" height="100%"/>
+    <div id="title"><a href="https://wiki.mozilla.org/Platform/GFX/TriageSchedule#Schedule">Graphics</a></div>
+    <div id="subtitle" class="subtitle">for the subtitle goes</div></div>
+    <div id="announcement" class="announcement">Please set <b>SEVERITY</b> on all bugs during triage. This avoids autobot needinfos to triage owners.</div>
+    <center><div id="content"><h2>No triage information for this year</h2></div></center>
+  </body>
+</html>
